@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_workout_logs"
+        android:enabled="true"
+        android:icon="@drawable/list"
+        android:title="@string/text_workout_logs"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_exercise"
+        android:enabled="true"
+        android:icon="@drawable/fitness_center"
+        android:title="@string/text_exercise"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_camera"
+        android:enabled="true"
+        android:icon="@drawable/camera"
+        android:title="@string/text_camera"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_settings"
+        android:enabled="true"
+        android:icon="@drawable/settings"
+        android:title="@string/text_settings"
+        app:showAsAction="ifRoom" />
+</menu>
