@@ -11,17 +11,13 @@
         android:layout_height="?attr/actionBarSize"
         app:navigationIcon="?attr/homeAsUpIndicator" />
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:background="?android:attr/windowBackground"
-        app:elevation="16dp"
-        app:itemBackground="@color/colorBottomNavItemBackground"
-        app:itemIconTint="@drawable/nav_item_color_state"
-        app:itemTextColor="@drawable/nav_item_color_state"
-        app:menu="@menu/bottom_nav_main" />
+        android:layout_height="wrap_content">
 
+        <TableLayout
+            android:id="@+id/table_edit_exercises"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
 </RelativeLayout>
