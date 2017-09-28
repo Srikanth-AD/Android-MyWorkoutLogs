@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorHint">#ededed</color>
+    <color name="colorHint">#6e6e6e</color>
     <color name="colorPrimary">#222222</color>
     <color name="colorPrimaryDark">#151515</color>
     <color name="colorAccent">#7E7E7E</color>
