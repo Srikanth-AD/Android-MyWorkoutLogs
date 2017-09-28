@@ -9,6 +9,10 @@
     <string name="text_camera">Photo</string>
     <string name="heading_exercises">Exercises</string>
 
+    <string name="text_exercise_name">Exercise Name</string>
+    <string name="text_reps">Reps</string>
+    <string name="text_weight_measure">Lbs</string>
+
     <string name="title_activity_bottomnav">Bottomnav</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

@@ -2,11 +2,13 @@ package me.srikanth.myworkoutlogs;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
 
 public class MainActivity extends BaseActivity {
+
 
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_main);
@@ -24,14 +26,30 @@ public class MainActivity extends BaseActivity {
 
                             case R.id.action_exercise:
 
-                                Intent saveWorkoutLogIntent = new Intent(MainActivity.this,
-                                        SaveWorkoutLog.class);
-                                startActivity(saveWorkoutLogIntent);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent saveWorkoutLogIntent = new Intent(MainActivity.this,
+                                                SaveWorkoutLog.class);
+                                        startActivity(saveWorkoutLogIntent);
+                                        finish();
+                                    }
+                                }, 200);
+
+
                                 break;
                         }
 
                         return true;
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
