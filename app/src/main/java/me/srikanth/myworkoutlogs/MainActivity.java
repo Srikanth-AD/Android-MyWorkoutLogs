@@ -8,7 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -17,16 +17,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
@@ -37,11 +43,15 @@ public class MainActivity extends BaseActivity {
     private GoogleApiClient mGoogleApiClient;
     private BottomNavigationView bottomNavigationView;
 
+    public static HashMap<String, String> exerciseDataFromDB;
+    public static List<String> exerciseNamesFromDB;
+
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         signInButton = findViewById(R.id.sign_in_button);
+        exerciseDataFromDB = new HashMap<>();
 
         bottomNavigationView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -107,6 +117,8 @@ public class MainActivity extends BaseActivity {
                     // User is signed in
                     signInButton.setVisibility(View.GONE);
                     bottomNavigationView.setVisibility(View.VISIBLE);
+                    RelativeLayout mainRelativeLayout = findViewById(R.id.main_relative_layout);
+                    mainRelativeLayout.setBackgroundResource(0);
                     Log.d("User is signed in", "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User is signed out
@@ -123,14 +135,45 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        // read exercise data from db
+            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+            database.child("exercisedata").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+
+                    for (DataSnapshot exerciseSnapshot: snapshot.getChildren()) {
+
+                        String exerciseName = "";
+                        String muscleGroup = "";
+
+                        for (DataSnapshot test: exerciseSnapshot.getChildren()) {
+
+                            if(test.getKey().equals("exercise_name")) {
+                                exerciseName = test.getValue().toString();
+                            }
+
+                            if(test.getKey().equals("muscle_group")) {
+                                muscleGroup = test.getValue().toString();
+                            }
+                        }
+
+                        exerciseDataFromDB.put(exerciseName, muscleGroup);
+                    }
+                    exerciseNamesFromDB = new ArrayList<>(exerciseDataFromDB.keySet());
+                }
+                @Override
+                public void onCancelled(DatabaseError firebaseError) {
+                    Log.e("The read failed: " ,firebaseError.getMessage());
+                }
+            });
+        // end read exercise data from db
+
     }
 
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
